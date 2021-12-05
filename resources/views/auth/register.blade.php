@@ -26,6 +26,25 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="department_id" class="col-md-4 col-form-label text-md-right">{{ __('Department') }}</label>
+
+                            <div class="col-md-6">
+                                <select class="form-select @error('department_id') is-invalid @enderror" id="department_id" name="department_id">
+                                    <option value="">Select Any</option>
+                                    @foreach ($departments as $department)
+                                        <option value="{{ $department->id }}" @if (old('department_id') == $department->id) selected @endif>{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('department_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
