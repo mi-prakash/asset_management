@@ -28,11 +28,20 @@ Route::group(['middleware' => 'admin'], function()
 {
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
 
+    // Users
     Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'getUsers'])->name('admin.getUsers');
     Route::get('/admin/users/add', [App\Http\Controllers\AdminController::class, 'addUser'])->name('admin.addUser');
     Route::post('/admin/users/store', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('admin.storeUser');
     Route::get('/admin/users/edit/{id}', [App\Http\Controllers\AdminController::class, 'editUser'])->name('admin.editUser');
     Route::post('/admin/users/update/{id}', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('admin.updateUser');
     Route::delete('/admin/users/destroy/{id}', [App\Http\Controllers\AdminController::class, 'destroyUser'])->name('admin.destroyUser');
+
+    // Assets
+    Route::get('/admin/assets', [App\Http\Controllers\AssetController::class, 'index'])->name('admin.assets.index');
+    Route::get('/admin/assets/add', [App\Http\Controllers\AssetController::class, 'add'])->name('admin.assets.add');
+    Route::post('/admin/assets/store', [App\Http\Controllers\AssetController::class, 'store'])->name('admin.assets.store');
+    Route::get('/admin/assets/edit/{id}', [App\Http\Controllers\AssetController::class, 'edit'])->name('admin.assets.edit');
+    Route::post('/admin/assets/update/{id}', [App\Http\Controllers\AssetController::class, 'update'])->name('admin.assets.update');
+    Route::delete('/admin/assets/destroy/{id}', [App\Http\Controllers\AssetController::class, 'destroy'])->name('admin.assets.destroy');
 
 });
