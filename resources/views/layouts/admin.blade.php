@@ -25,14 +25,18 @@
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+    @if (Session::has('success_message'))
+        <div id="success-msg" class="alert alert-primary custom-alert" role="alert">{{ Session::get('success_message') }}</div>
+    @endif
+    @if (Session::has('error_message'))
+        <div id="error-danger-msg" class="alert alert-danger custom-alert" role="alert">{{ Session::get('error_message') }}</div>
+    @endif
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                @auth
-                    <a class="navbar-brand" href="{{ url('/') }}">Home</a>
-                    <a class="navbar-brand" href="{{ url('home/assets') }}">Assets</a>
-                    <a class="navbar-brand" href="{{ url('home/users') }}">Users</a>
-                @endauth
+                <a class="navbar-brand me-5 {{ request()->is('admin') ? 'text-primary' : '' }}" href="{{ url('admin') }}">Home</a>
+                <a class="navbar-brand me-5 {{ request()->is('admin/assets*') ? 'text-primary' : '' }}" href="{{ url('admin/assets') }}">Assets</a>
+                <a class="navbar-brand me-5 {{ request()->is('admin/users*') ? 'text-primary' : '' }}" href="{{ url('admin/users') }}">Employees</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
