@@ -119,9 +119,14 @@ class AssetController extends Controller
                 $update_asset = Asset::where('id', $asset_id)->update(['assigned_to' => $id, 'assigned_time' => $assigned_time]);
             }
         }
+
+        // Send Email to user and admin
+        // ..code here
+
         if ($update_asset) {
             Session::flash('success_message','Successfully updated');
         }
+
         return redirect('admin/assign_assets/'.$id);
     }
 
@@ -133,5 +138,31 @@ class AssetController extends Controller
             Session::flash('success_message','Successfully deleted');
             echo "success";
         }
+    }
+
+    public function assignedAssetsList(Request $request)
+    {
+        $assets = Asset::where('assigned_to', '!=', 0)->get();
+        $search_by = NULL;
+        $department_id = NULL;
+        if (isset($request->search_by) && $request->search_by == "allocated") {
+            $assets = Asset::where('assigned_to', '!=', 0);
+            $search_by = $request->search_by;
+        } elseif (isset($request->search_by) && $request->search_by == "allocated_5") {
+            $prev_date = date("Y-m-d", strtotime('-5 days'));
+            $assets = Asset::where('assigned_to', '!=', 0)->where('assigned_time', ">=", $prev_date);
+            $search_by = $request->search_by;
+        } elseif (isset($request->search_by) && $request->search_by == "remaining") {
+            $assets = Asset::where('assigned_to', 0);
+            $search_by = $request->search_by;
+        }
+        if (isset($request->department_id) && !empty($request->department_id)) {
+            $assets = $assets->join('users', 'users.id', '=', 'assets.assigned_to')->where('users.department_id', $request->department_id)->get();
+            $department_id = $request->department_id;
+        } else {
+            $assets = $assets->get();
+        }
+        $departments = Department::get();
+        return view('admin.assets.assigned_assets_list', compact('assets', 'departments', 'search_by', 'department_id'));
     }
 }

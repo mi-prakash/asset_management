@@ -50,4 +50,8 @@ Route::group(['middleware' => 'admin'], function()
     Route::post('/admin/assign_assets/{id}', [App\Http\Controllers\AssetController::class, 'assignAssetsUpdate'])->name('admin.assets.assignAssetsUpdate');
     Route::post('/admin/assign_assets/destroy/{id}', [App\Http\Controllers\AssetController::class, 'assignAssetsDestroy'])->name('admin.assets.assignAssetsDestroy');
 
+    Route::get('/admin/assigned_assets', [App\Http\Controllers\AssetController::class, 'assignedAssetsList'])->name('admin.assets.assignedAssetsList');
+    // Route::get('/admin/assigned_assets/{}/{}', [App\Http\Controllers\AssetController::class, 'assignedAssetsList'])->name('admin.assets.assignedAssetsList');
+
+
 });
