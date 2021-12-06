@@ -93,4 +93,45 @@ class AssetController extends Controller
             echo "success";
         }
     }
+
+    public function assignAssetsIndex()
+    {
+        $users = User::where('is_admin', 0)->orWhereNull('is_admin')->get();
+        return view('admin.assets.assign_asset_index', compact('users'));
+    }
+
+    public function assignAssetsAdd($id)
+    {
+        $user = User::where('id', $id)->where('is_admin', 0)->first();
+        $available_assets = Asset::where('assigned_to', 0)->get();
+        if (!$user) abort(404);
+        return view('admin.assets.assign_asset_add', compact('user', 'available_assets'));
+    }
+
+    public function assignAssetsUpdate(Request $request, $id)
+    {
+        foreach ($request->assign_assets as $asset_id) {
+            echo $asset_id."<br>";
+            // Check if asset is already assigned
+            $check = Asset::where('id', $asset_id)->where('assigned_to', 0)->first();
+            if ($check) {
+                $assigned_time = date("Y-m-d H:i:s");
+                $update_asset = Asset::where('id', $asset_id)->update(['assigned_to' => $id, 'assigned_time' => $assigned_time]);
+            }
+        }
+        if ($update_asset) {
+            Session::flash('success_message','Successfully updated');
+        }
+        return redirect('admin/assign_assets/'.$id);
+    }
+
+    public function assignAssetsDestroy($id)
+    {
+        $delete = Asset::where('id', $id)->update(['assigned_to' => 0, 'assigned_time' => NULL]);
+
+        if ($delete) {
+            Session::flash('success_message','Successfully deleted');
+            echo "success";
+        }
+    }
 }

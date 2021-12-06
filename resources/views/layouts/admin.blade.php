@@ -35,8 +35,9 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand me-5 {{ request()->is('admin') ? 'text-primary' : '' }}" href="{{ url('admin') }}">Home</a>
-                <a class="navbar-brand me-5 {{ request()->is('admin/assets*') ? 'text-primary' : '' }}" href="{{ url('admin/assets') }}">Assets</a>
                 <a class="navbar-brand me-5 {{ request()->is('admin/users*') ? 'text-primary' : '' }}" href="{{ url('admin/users') }}">Employees</a>
+                <a class="navbar-brand me-5 {{ request()->is('admin/assets*') ? 'text-primary' : '' }}" href="{{ url('admin/assets') }}">Assets</a>
+                <a class="navbar-brand me-5 {{ request()->is('admin/assign_assets*') ? 'text-primary' : '' }}" href="{{ url('admin/assign_assets') }}">Assign Assets</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>

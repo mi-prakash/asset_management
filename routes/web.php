@@ -44,4 +44,10 @@ Route::group(['middleware' => 'admin'], function()
     Route::post('/admin/assets/update/{id}', [App\Http\Controllers\AssetController::class, 'update'])->name('admin.assets.update');
     Route::delete('/admin/assets/destroy/{id}', [App\Http\Controllers\AssetController::class, 'destroy'])->name('admin.assets.destroy');
 
+    // Assign Assets
+    Route::get('/admin/assign_assets', [App\Http\Controllers\AssetController::class, 'assignAssetsIndex'])->name('admin.assets.assignAssetsIndex');
+    Route::get('/admin/assign_assets/{id}', [App\Http\Controllers\AssetController::class, 'assignAssetsAdd'])->name('admin.assets.assignAssetsAdd');
+    Route::post('/admin/assign_assets/{id}', [App\Http\Controllers\AssetController::class, 'assignAssetsUpdate'])->name('admin.assets.assignAssetsUpdate');
+    Route::post('/admin/assign_assets/destroy/{id}', [App\Http\Controllers\AssetController::class, 'assignAssetsDestroy'])->name('admin.assets.assignAssetsDestroy');
+
 });

@@ -20,3 +20,6 @@ table {
     left: 50%;
     transform: translateX(-50%);
 }
+.navbar-brand {
+    font-size: 1rem;
+}
