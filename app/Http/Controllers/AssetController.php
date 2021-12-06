@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Asset;
 use App\Models\Department;
 use App\Models\User;
-
+use App\Mail\MyMail;
+use Illuminate\Support\Facades\Mail;
+use Exception;
 class AssetController extends Controller
 {
     /**
@@ -110,18 +112,46 @@ class AssetController extends Controller
 
     public function assignAssetsUpdate(Request $request, $id)
     {
+        $assets = "";
         foreach ($request->assign_assets as $asset_id) {
-            echo $asset_id."<br>";
             // Check if asset is already assigned
             $check = Asset::where('id', $asset_id)->where('assigned_to', 0)->first();
             if ($check) {
+                $assets .= $check->name.",";
                 $assigned_time = date("Y-m-d H:i:s");
                 $update_asset = Asset::where('id', $asset_id)->update(['assigned_to' => $id, 'assigned_time' => $assigned_time]);
             }
         }
 
+        $user = User::where('id', $id)->first();
+        $user_email = $user->email;
+        $admin_email = Auth::user()->email;
+
         // Send Email to user and admin
-        // ..code here
+        // Admin email
+        $details = [
+            'title' => 'Asset Assign notification',
+            'body' => "You have assigned assets to the following user.\n
+                        User: ".$user_email."\n
+                        Assets: ".$assets."\n"
+        ];
+        try {
+            Mail::to($admin_email)->send(new MyMail($details));
+        } catch (Exception $e) {
+            // Debug via $e->getMessage();
+        }
+
+        // User email
+        $details = [
+            'title' => 'Asset Assign notification',
+            'body' => "The Admin assigned you the following assets.\n
+                        Assets: ".$assets."\n"
+        ];
+        try {
+            Mail::to($user_email)->send(new MyMail($details));
+        } catch (Exception $e) {
+            // Debug via $e->getMessage();
+        }
 
         if ($update_asset) {
             Session::flash('success_message','Successfully updated');
@@ -142,7 +172,7 @@ class AssetController extends Controller
 
     public function assignedAssetsList(Request $request)
     {
-        $assets = Asset::where('assigned_to', '!=', 0)->get();
+        $assets = Asset::where('assigned_to', '!=', 0);
         $search_by = NULL;
         $department_id = NULL;
         if (isset($request->search_by) && $request->search_by == "allocated") {
@@ -164,5 +194,20 @@ class AssetController extends Controller
         }
         $departments = Department::get();
         return view('admin.assets.assigned_assets_list', compact('assets', 'departments', 'search_by', 'department_id'));
+    }
+
+    public function testMail()
+    {
+        $details = [
+            'title' => 'Mail from Asset Management',
+            'body' => 'This is for testing email using smtp'
+        ];
+        try {
+            Mail::to('prakash.a7x@gmail.com')->send(new MyMail($details));
+            return "Success";
+        } catch (Exception $e) {
+            // Debug via $e->getMessage();
+            return "Email send failed!";
+        }
     }
 }
