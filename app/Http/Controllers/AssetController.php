@@ -112,14 +112,22 @@ class AssetController extends Controller
 
     public function assignAssetsUpdate(Request $request, $id)
     {
+        $request->validate([
+            'assign_assets' => ['required'],
+        ]);
+
         $assets = "";
-        foreach ($request->assign_assets as $asset_id) {
-            // Check if asset is already assigned
-            $check = Asset::where('id', $asset_id)->where('assigned_to', 0)->first();
-            if ($check) {
-                $assets .= $check->name.",";
-                $assigned_time = date("Y-m-d H:i:s");
-                $update_asset = Asset::where('id', $asset_id)->update(['assigned_to' => $id, 'assigned_time' => $assigned_time]);
+        $update_asset = NULL;
+
+        if (isset($request->assign_assets) && !empty($request->assign_assets)) {
+            foreach ($request->assign_assets as $asset_id) {
+                // Check if asset is already assigned
+                $check = Asset::where('id', $asset_id)->where('assigned_to', 0)->first();
+                if ($check) {
+                    $assets .= $check->name.",";
+                    $assigned_time = date("Y-m-d H:i:s");
+                    $update_asset = Asset::where('id', $asset_id)->update(['assigned_to' => $id, 'assigned_time' => $assigned_time]);
+                }
             }
         }
 

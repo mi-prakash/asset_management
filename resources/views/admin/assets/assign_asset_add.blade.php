@@ -51,12 +51,17 @@
                     <label for="assign_assets[]" class="col-md-4 col-form-label text-md-end">Assign Assets</label>
 
                     <div class="col-md-3">
-                        <select class="form-select" id="assign_assets" name="assign_assets[]" multiple aria-label="multiple select">
+                        <select class="form-select @error('assign_assets') is-invalid @enderror" id="assign_assets" name="assign_assets[]" multiple aria-label="multiple select">
                             @foreach ($available_assets as $available_asset)
                                 <option value="{{ $available_asset->id }}">{{ $available_asset->name }}</option>
                             @endforeach
                         </select>
                         <span class="form-text">Use <b>Ctrl</b> to multi select</span>
+                        @error('assign_assets')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                 </div>
 
