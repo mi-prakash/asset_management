@@ -31,6 +31,13 @@
     @if (Session::has('error_message'))
         <div id="error-danger-msg" class="alert alert-danger custom-alert" role="alert">{{ Session::get('error_message') }}</div>
     @endif
+
+    <div id="loader-content" class="hidden">
+        <div class="loader">
+            <i class="fa fa-refresh fa-spin fa-5x"></i>
+        </div>
+    </div>
+
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

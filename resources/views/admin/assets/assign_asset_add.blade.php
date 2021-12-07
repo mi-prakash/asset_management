@@ -96,6 +96,9 @@
                 });
             }
         });
+        $("form").submit(function(){
+            $("#loader-content").removeClass("hidden");
+        });
     });
 </script>
 @endsection

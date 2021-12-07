@@ -3,7 +3,7 @@ table {
 	box-shadow: #bfbfbf 2px 2px 5px;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 .placeholder {
     padding: 0;
@@ -22,4 +22,21 @@ table {
 }
 .navbar-brand {
     font-size: 1rem;
+}
+#loader-content {
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999999;
+    color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #00000038;
+}
+#loader-content .loader {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%, -50%);
 }
